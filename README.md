@@ -19,7 +19,8 @@ let tpl = new TemplateInstance(templateElement, initParams, processor)
 tpl.update(newParams)
 ```
 
-## Spec surface
+<details id="spec-surface">
+  <summary>Spec surface</summary>
 
 ```js
 interface TemplateInstance : DocumentFragment {
