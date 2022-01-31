@@ -11,6 +11,7 @@ Difference from [@github/template-parts](https://github.com/github/template-part
 - Single vanilla ESM, no tooling.
 <!-- - [`<svg width={{ width }}>`](https://github.com/github/template-parts/issues/26) and other cases fixed. -->
 
+## Usage
 
 ```js
 import { TemplateInstance } from 'template-parts'
@@ -63,7 +64,7 @@ interface InnerTemplatePart : NodeTemplatePart {
 </details>
 
 
-### Tables
+## Tables
 
 Due to HTML quirk in table parsing, table fields should be wrapped into comment:
 
