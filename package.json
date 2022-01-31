@@ -1,0 +1,34 @@
+{
+  "name": "template-parts",
+  "version": "1.0.0",
+  "description": "Compact template-parts ponyfill",
+  "main": "template-parts.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spectjs/template-parts.git"
+  },
+  "keywords": [
+    "template-parts",
+    "template-instantiation",
+    "dom-parts",
+    "templize",
+    "template-fields",
+    "template-instance"
+  ],
+  "author": "Dmitry Iv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spectjs/template-parts/issues"
+  },
+  "homepage": "https://github.com/spectjs/template-parts#readme",
+  "dependencies": {
+    "swapdom": "^1.1.1"
+  },
+  "devDependencies": {
+    "jsdom": "^19.0.0",
+    "tst": "^7.1.0"
+  }
+}
