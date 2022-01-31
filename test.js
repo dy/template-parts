@@ -1,6 +1,7 @@
 import test, {is, any} from 'tst'
-import {TemplateInstance, AttributeTemplatePart} from '../template-parts.js'
-import { tokenize } from '../template-parts.js'
+import { TemplateInstance, AttributeTemplatePart } from './template-parts.js'
+import { tokenize } from './template-parts.js'
+import h from 'hyperf'
 
 const STRING = 0, PART = 1
 
@@ -461,10 +462,11 @@ test('attr: updates the AttributeValue which updates the Attr whenever it receiv
 })
 
 test('nodes: should preserve spaces', t => {
-  let el = h`<p><span>{{ count }}</span> {{ text }} left</p>`
-
-  templize(el, {count: 10, text: 'items'})
-
+  let tpl = document.createElement('template')
+  tpl.innerHTML = `<span>{{ count }}</span> {{ text }} left`
+  let inst = new TemplateInstance(tpl, {count: 10, text: 'items'})
+  let el = document.createElement('div')
+  el.appendChild(inst)
   is(el.innerHTML, `<span>10</span> items left`)
 })
 
@@ -520,8 +522,6 @@ test('processor: does not process parts with no param for the expression', () =>
 
 
 
-
-
 test.browser('table: default HTML behavior', () => {
   let tpl = document.createElement('template')
   tpl.innerHTML = `<table>123</table>`
@@ -530,6 +530,23 @@ test.browser('table: default HTML behavior', () => {
   const el = document.createElement('div')
   el.appendChild(instance)
   is(el.innerHTML, `123<table></table>`)
+})
+
+test('table: <table><!--{{ a }}--><tr><!-- {{ b }} --></tr></table>', () => {
+  let tpl = document.createElement('template')
+  tpl.innerHTML = `<table><!--{{ a }}--><tr><!--  {{ b }}  --></tr></table>`
+
+  let table = document.createElement('table')
+  table.innerHTML = `<tr><td>a</td></tr>`
+  let inst = new TemplateInstance(tpl, {a: table.childNodes[0].childNodes, b:'b'})
+
+  let el = document.createElement('div')
+  el.appendChild(inst)
+
+  any(el.innerHTML, [
+    `<table><tr><td>a</td></tr><tr> b </tr></table>`,
+    `<table><tr><td>a</td></tr><tbody><tr>  b  </tr></tbody></table>`
+  ])
 })
 
 // NOTE: skipping ad-hoc
@@ -649,21 +666,6 @@ test.skip('table: <table><thead><tr>{{ a }}</tr></thead><tr>{{ b }}</tr></table>
   any(el.innerHTML, [
     `<table><thead><tr>123</tr></thead><tr>456</tr></table>`,
     `<table><thead><tr>123</tr></thead><tbody><tr>456</tr></tbody></table>`
-  ])
-})
-
-
-test('table: <table><!--{{ a }}--><tr><!-- {{ b }} --></tr></table>', () => {
-  let el = document.createElement('el')
-  el.innerHTML = `<table><!--{{ a }}--><tr><!--  {{ b }}  --></tr></table>`
-
-  let table = document.createElement('table')
-  table.innerHTML = `<tr><td>a</td></tr>`
-  templize(el, {a: table.childNodes[0].childNodes, b:'b'})
-
-  any(el.innerHTML, [
-    `<table><tr><td>a</td></tr><tr> b </tr></table>`,
-    `<table><tr><td>a</td></tr><tbody><tr>  b  </tr></tbody></table>`
   ])
 })
 

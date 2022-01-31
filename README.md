@@ -64,7 +64,7 @@ interface InnerTemplatePart : NodeTemplatePart {
 </details>
 
 
-## Tables
+### Tables
 
 Due to HTML quirk in table parsing, table fields should be wrapped into comment:
 
