@@ -1,6 +1,6 @@
 # template-parts [![test](https://github.com/spectjs/template-parts/actions/workflows/test.yml/badge.svg)](https://github.com/spectjs/template-parts/actions/workflows/test.yml) [![npm version](https://img.shields.io/npm/v/template-parts)](http://npmjs.org/template-parts)
 
-> Compact template parts ponyfill. Based on [Template Instantiation](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md#32-template-parts-and-custom-template-process-callback) spec.
+> Compact [template parts](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md#32-template-parts-and-custom-template-process-callback) ponyfill.
 
 Difference from [@github/template-parts](https://github.com/github/template-parts):
 
