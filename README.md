@@ -89,6 +89,10 @@ _Templize_ recognizes inner templates as [_InnerTemplatePart_](https://github.co
 </template>
 ```
 
+## See also
+
+* [templize](https://github.com/spectjs/templize) − elaborate expressions and reactive props processor for template-parts.
+
 ## Alternatives
 
 * [@github/template-parts](https://github.com/github/template-parts) − viable Template Parts implementation, doesn't closely follow spec in secondary details, but provides reliable ground.
