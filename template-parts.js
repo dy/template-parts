@@ -50,7 +50,18 @@ const FRAGMENT = 11, ELEMENT = 1, STRING = 0, PART = 1;
 const defaultProcessor = {
   processCallback(instance, parts, state) {
     if (!state) return
-    for (const part of parts) if (part.expression in state) part.value = state[part.expression];
+    for (const part of parts)
+      if (part.expression in state) {
+        const value = state[part.expression];
+
+        // boolean attr
+        if (
+          typeof value === 'boolean' &&
+          part instanceof AttributeTemplatePart &&
+          typeof part.element[part.attributeName] === 'boolean'
+        ) part.booleanValue = value;
+        else part.value = value;
+      }
   }
 };
 

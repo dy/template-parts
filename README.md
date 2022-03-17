@@ -18,6 +18,9 @@ import { TemplateInstance } from 'template-parts'
 
 let tpl = new TemplateInstance(templateElement, initParams, processor)
 tpl.update(newParams)
+
+// eg. immediate singleton template:
+// templateElement.replaceWith(tpl)
 ```
 
 <details id="spec-surface">
@@ -89,6 +92,22 @@ _Templize_ recognizes inner templates as [_InnerTemplatePart_](https://github.co
 </template>
 ```
 
+## processor
+
+Default processor is _property identity or boolean attribute_:
+
+```
+const el = document.createElement('div')
+el.setAttribute('x', '')
+el.setAttribute('hidden', true)
+
+const tpl = new TemplateInstance(el, { x: 'Hello', hidden: false })
+el.getAttribute('x') // 'Hello'
+el.hasAttribute('hidden') // false
+```
+
+_Template Parts_ processor is interoperable with any standard processor, eg. [github/template-parts](https://github.com/github/template-parts).
+
 ## See also
 
 * [templize](https://github.com/spectjs/templize) − elaborate expressions and reactive props processor for template-parts.
@@ -100,4 +119,4 @@ _Templize_ recognizes inner templates as [_InnerTemplatePart_](https://github.co
 * [PolymerLabs/template-instantiation](https://github.com/PolymerLabs/template-instantiation) − implementation from Google with TemplateAssembly, TemplateRule and other extensions.
 
 
-<p align="center">🕉<p>
+<p align="center"><a href="https://github.com/krsnzd/license">🕉</a><p>
