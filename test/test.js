@@ -1,6 +1,5 @@
 import test, {is, any} from 'tst'
-import { TemplateInstance, AttributeTemplatePart } from './template-parts.js'
-import { tokenize } from './template-parts.js'
+import { TemplateInstance, AttributeTemplatePart, tokenize } from '../src/template-parts.js'
 import h from 'hyperf'
 
 const STRING = 0, PART = 1

@@ -5,9 +5,9 @@
   "main": "template-parts.js",
   "type": "module",
   "scripts": {
-    "test": "node -r ./dom.cjs test",
-    "build": "rollup ./template-parts.js -p @rollup/plugin-node-resolve --file template-parts.min.js --format esm",
-    "minify": "terser template-parts.min.js -o template-parts.min.js --module -c passes=3 -m"
+    "test": "node -r ./test/dom.cjs ./test/test",
+    "build": "rollup ./src/template-parts.js -p @rollup/plugin-node-resolve --file template-parts.js --format esm",
+    "minify": "terser template-parts.js -o template-parts.min.js --module -c passes=3 -m"
   },
   "repository": {
     "type": "git",
