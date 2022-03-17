@@ -82,12 +82,12 @@ Due to HTML quirk in table parsing, table fields should be wrapped into comment:
 
 ## InnerTemplatePart
 
-_Templize_ recognizes inner templates as [_InnerTemplatePart_](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md#33-conditionals-and-loops-using-nested-templates), expecting `directive` and `expression` attributes.
+_Template parts_ recognize inner templates as [_InnerTemplatePart_](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md#33-conditionals-and-loops-using-nested-templates), expecting `directive` and `expression` attributes.
 
 ```html
 <template>
   <div>
-    <template directive="x" expression="x">{{x}}</template>
+    <template directive="if" expression="isActive">{{x}}</template>
   </div>
 </template>
 ```
@@ -96,14 +96,14 @@ _Templize_ recognizes inner templates as [_InnerTemplatePart_](https://github.co
 
 Default processor is _property identity or boolean attribute_:
 
-```
-const el = document.createElement('div')
-el.setAttribute('x', '')
-el.setAttribute('hidden', true)
+```js
+const el = document.createElement('template')
+el.innerHTML = `<div x={{x}} hidden={{hidden}} onclick={{onclick}}></div>`
 
 const tpl = new TemplateInstance(el, { x: 'Hello', hidden: false })
 el.getAttribute('x') // 'Hello'
 el.hasAttribute('hidden') // false
+el.onclicj
 ```
 
 _Template Parts_ processor is interoperable with any standard processor, eg. [github/template-parts](https://github.com/github/template-parts).
@@ -117,6 +117,7 @@ _Template Parts_ processor is interoperable with any standard processor, eg. [gi
 * [@github/template-parts](https://github.com/github/template-parts) − viable Template Parts implementation, doesn't closely follow spec in secondary details, but provides reliable ground.
 * [template-instantiation-polyfill](https://github.com/bennypowers/template-instantiation-polyfill#readme) − closely follows the Template Instantiation spec algorithm, but [is not recommended](https://github.com/bennypowers/template-instantiation-polyfill/pull/2#issuecomment-1004110993) by author.
 * [PolymerLabs/template-instantiation](https://github.com/PolymerLabs/template-instantiation) − implementation from Google with TemplateAssembly, TemplateRule and other extensions.
-
+* [template-instance](https://github.com/ar2r13/TemplateInstance)
+* [template-instantiation-prollyfill](https://www.npmjs.com/package/template-instantiation-prollyfill)
 
 <p align="center"><a href="https://github.com/krsnzd/license">🕉</a><p>
