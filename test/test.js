@@ -22,11 +22,27 @@ test('parse: does not turn escaped `{{`s into expression tokens', () => {
 test('parse: does not terminate expressions with escaped `}}`s', () => {
   is(Array.from(tokenize('{{x\\}}}')), [[PART,'x\\}']])
   is(Array.from(tokenize('{{x\\}\\}}}')), [[PART,'x\\}\\}']])
+  is(Array.from(tokenize('\\{{x}}')), [[STRING,'\\{{x}}']])
+  is(Array.from(tokenize('{{x\\}}')), [[STRING,'{{x\\}}']])
 })
 
-test('parse: strips leading and trailing whitespace', () => {
-  is(Array.from(tokenize('{{ x }}')), [[PART,'x']])
+test('parse: trailing whitespaces, trailing strings', () => {
+   is(tokenize('{{ x }}'), [
+    [PART, 'x']
+  ])
+
+   is(tokenize('{{ x }}!'), [
+    [PART, 'x'],
+    [STRING, '!']
+  ])
+
+   is(tokenize('hello {{ x }}!'), [
+    [STRING, 'hello '],
+    [PART, 'x'],
+    [STRING, '!']
+  ])
 })
+
 
 test('parse: tokenizes multiple values', () => {
   is(Array.from(tokenize('hello {{x}} and {{y}}')), [
@@ -42,10 +58,11 @@ test('parse: ignores single braces', () => {
 })
 
 test('parse: ignores mismatching parens, treating them as text', () => {
-  is(Array.from(tokenize('hello {{')), [
-    [STRING, 'hello {{'],
-  ])
+  is(Array.from(tokenize('hello {{')), [[STRING, 'hello {{'],])
   is(Array.from(tokenize('hello }}')), [[STRING, 'hello }}']])
+  is(Array.from(tokenize('hello {{{{')), [[STRING, 'hello '],[STRING,'{{{{']])
+  is(Array.from(tokenize('hello {{}{')), [[STRING, 'hello '],[STRING,'{{}{']])
+  is(Array.from(tokenize('hello }}{{}')), [[STRING, 'hello }}{{}']])
 })
 
 test('parse: ignores internal parens', () => {
@@ -54,13 +71,54 @@ test('parse: ignores internal parens', () => {
     [PART,'"a {{ b }} c"'],
     [STRING, ' world'],
   ])
+
+  is(Array.from(tokenize('{{ "Your balance: {{ balance }}" }}')), [
+    [PART,'"Your balance: {{ balance }}"']
+  ])
 })
 
 test('parse: parses sequence of inserts', () => {
-  is(Array.from(tokenize('{{a}}{{b}}{{c}}')), [
+  is(tokenize('{{a}}{{b}}{{c}}'), [
     [PART,'a'],
     [PART,'b'],
     [PART,'c']
+  ])
+
+  is(tokenize('hello {{x}}{{y}}'), [
+    [STRING, 'hello '],
+    [PART,'x'],
+    [PART,'y']
+  ])
+
+  is(tokenize('abc{{def}}{{ghi}}{{jkl}}{{mno}}{{pqr}}{{stu}}vwxyz'),
+    [
+      [STRING, 'abc'],
+      [PART, 'def'],
+      [PART, 'ghi'],
+      [PART, 'jkl'],
+      [PART, 'mno'],
+      [PART, 'pqr'],
+      [PART, 'stu'],
+      [STRING, 'vwxyz']
+  ])
+})
+
+test('parse: awkward inputs', () => {
+   is(tokenize('{x{{}}}'), [
+    [STRING, '{x'],
+    [PART, ''],
+    [STRING, '}']
+  ])
+
+   is(tokenize('{{{ x}}}'), [
+    [PART, '{ x'],
+    [STRING, '}']
+  ])
+
+   is(tokenize('{}{{x}}}'), [
+    [STRING, '{}'],
+    [PART, 'x'],
+    [STRING, '}']
   ])
 })
 
@@ -75,6 +133,7 @@ test('create: applies data to templated text nodes', () => {
   root.appendChild(instance)
   is(root.innerHTML, `Hello world`)
 })
+
 test('create: can render into partial text nodes', () => {
   const template = document.createElement('template')
   const originalHTML = `Hello {{x}}!`
@@ -85,6 +144,7 @@ test('create: can render into partial text nodes', () => {
   root.appendChild(instance)
   is(root.innerHTML, `Hello world!`)
 })
+
 test('create: can render nested text nodes', () => {
   const template = document.createElement('template')
   const originalHTML = '<div><div>Hello {{x}}!</div></div>'
@@ -95,6 +155,7 @@ test('create: can render nested text nodes', () => {
   root.appendChild(instance)
   is(root.innerHTML, `<div><div>Hello world!</div></div>`)
 })
+
 test('create: applies data to templated attributes', () => {
   const template = document.createElement('template')
   const originalHTML = `<div class="{{y}}"></div>`
@@ -105,6 +166,7 @@ test('create: applies data to templated attributes', () => {
   root.appendChild(instance)
   is(root.innerHTML, `<div class="foo"></div>`)
 })
+
 test('create: can render into partial attribute nodes', () => {
   const template = document.createElement('template')
   const originalHTML = `<div class="my-{{y}}-state"></div>`
@@ -115,6 +177,7 @@ test('create: can render into partial attribute nodes', () => {
   root.appendChild(instance)
   is(root.innerHTML, `<div class="my-foo-state"></div>`)
 })
+
 test('create: can render into many values', () => {
   const template = document.createElement('template')
   const originalHTML = `<div class="my-{{x}}-state {{y}}">{{z}}</div>`
@@ -125,6 +188,7 @@ test('create: can render into many values', () => {
   root.appendChild(instance)
   is(root.innerHTML, `<div class="my-foo-state bar">baz</div>`)
 })
+
 test('create: it allows spaces inside template part identifiers', () => {
   const template = document.createElement('template')
   const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{         z          }}</div>`
@@ -135,6 +199,7 @@ test('create: it allows spaces inside template part identifiers', () => {
   root.appendChild(instance)
   is(root.innerHTML, `<div class="my-foo-state bar">baz</div>`)
 })
+
 test('create: never writes mustache syntax into an instantiated template even if no state given', () => {
   const template = document.createElement('template')
   const originalHTML = `<div class="my-{{ x }}-state {{ y }}">{{ z }}</div>`
@@ -145,6 +210,7 @@ test('create: never writes mustache syntax into an instantiated template even if
   root.appendChild(instance)
   is(root.innerHTML, `<div class="my--state "></div>`)
 })
+
 
 test('update: updates all nodes with new values', () => {
   const template = document.createElement('template')
@@ -206,8 +272,6 @@ test('update: inserting instance does not break update', () => {
   inst.update({a:2})
   is(el.innerHTML, `2`)
 })
-
-
 
 const propertyIdentityOrBooleanAttribute = {
   createCallback() {
@@ -310,7 +374,6 @@ test('update: is a noop when `update()` is called with no args', () => {
   instance.update({b: false})
   is(root.innerHTML, `<input aria-disabled="false" value="false">`)
 })
-
 
 test('update: replaces an empty replace() call with an empty text node', () => {
   const template = document.createElement('template')
