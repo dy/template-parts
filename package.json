@@ -1,6 +1,6 @@
 {
   "name": "template-parts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Compact template-parts ponyfill",
   "main": "template-parts.js",
   "type": "module",
