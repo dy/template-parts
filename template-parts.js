@@ -220,16 +220,17 @@ tokenize = (text) => {
     if (c === '{' && text[i+1] === '{' && text[i-1] !== '\\' && text[i+2] && ++open==1) {
       if (value) tokens.push([STRING, value ]);
       value = '';
-      i ++;
+      i++;
     }
     else if (c === '}' && text[i+1] === '}' && text[i-1] !== '\\' && !--open) {
       tokens.push([PART, value.trim() ]);
       value = '';
-      i ++;
+      i++;
     }
-    else value += text[i] || ''; // text[i] is undefined if i+=2 caught
+    else value += c || ''; // text[i] is undefined if i+=2 caught
   }
-  if (value) tokens.push([STRING, value ]);
+
+  if (value) tokens.push([STRING, (open>0 ? '{{' : '') + value ]);
 
   return mem[text] = tokens
 };

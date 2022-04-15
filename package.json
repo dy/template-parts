@@ -7,7 +7,7 @@
   "scripts": {
     "test": "node -r ./test/dom.cjs ./test/test",
     "build": "rollup ./src/template-parts.js -p @rollup/plugin-node-resolve --file template-parts.js --format esm",
-    "minify": "terser template-parts.js -o template-parts.min.js --module -c passes=3 -m"
+    "min": "terser template-parts.js -o template-parts.min.js --module -c passes=3 -m"
   },
   "repository": {
     "type": "git",
