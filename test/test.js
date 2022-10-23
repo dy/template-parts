@@ -262,17 +262,6 @@ test('update: inserting instance does not break update', () => {
   is(el.innerHTML, `2`)
 })
 
-test('update: inserting instance does not break update', () => {
-  let template = document.createElement('template')
-  template.innerHTML = `{{a}}`
-  const inst = new TemplateInstance(template, {a:1})
-  let el = document.createElement('div')
-  el.appendChild(inst)
-  is(el.innerHTML, `1`)
-  inst.update({a:2})
-  is(el.innerHTML, `2`)
-})
-
 const propertyIdentityOrBooleanAttribute = {
   createCallback() {
     return this.processCallback(...arguments)
@@ -597,7 +586,16 @@ test('processor: does not process parts with no param for the expression', () =>
   is(processor.processCalls, 0)
 })
 
-
+test('default processor: default processor is identity/boolean', () => {
+  const tplEl = document.createElement('template')
+  tplEl.innerHTML = `<div x={{x}} hidden={{hidden}} onclick={{onclick}}></div>`
+  const onclick = () => {} 
+  const tpl = new TemplateInstance(tplEl, { x: 'Hello', hidden: false, onclick })
+  let el = tpl.childNodes[0]
+  is(el.getAttribute('x'), 'Hello')
+  is(el.hasAttribute('hidden'), false)
+  is(el.onclick, onclick) // function
+})
 
 test.browser('table: default HTML behavior', () => {
   let tpl = document.createElement('template')

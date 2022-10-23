@@ -93,7 +93,7 @@ _Template parts_ recognize inner templates as [_InnerTemplatePart_](https://gith
 
 ## processor
 
-Default processor is _property identity or boolean attribute_:
+Default processor is _property identity, boolean attribute or function_:
 
 ```js
 const el = document.createElement('template')
