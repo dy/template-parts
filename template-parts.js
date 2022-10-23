@@ -88,7 +88,7 @@ class TemplatePart {
 }
 
 class AttributeTemplatePart extends TemplatePart {
-  #value = '';
+  #value='';
   get attributeName() { return this.setter.attr.name; }
   get attributeNamespace() { return this.setter.attr.namespaceURI; }
   get element() { return this.setter.element; }
