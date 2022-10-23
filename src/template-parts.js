@@ -60,7 +60,7 @@ export class AttributeTemplatePart extends TemplatePart {
     } else element.setAttributeNS(attr.namespaceURI, attr.name, parts.join(''));
   }
   get booleanValue() {
-    return this.setter.element.hasAttributeNS(this.setter.attr.name);
+    return this.setter.element.hasAttributeNS(this.attributeNamespace, this.setter.attr.name);
   }
   set booleanValue(value) {
     if (this.setter.parts.length === 1) this.value = value ? '' : null;
