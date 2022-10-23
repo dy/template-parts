@@ -283,7 +283,7 @@ const propertyIdentityOrBooleanAttribute = {
     for (const part of parts) {
       if (part.expression in params) {
         const value = params[part.expression] ?? ''
-
+        
         // boolean attr
         if (
           typeof value === 'boolean' &&
@@ -522,6 +522,21 @@ test('attr: updates the AttributeValue which updates the Attr whenever it receiv
   instance.parts[0].value = 'goodbye'
   is(el.getAttribute('class'), 'goodbye world')
 })
+
+test('attr: updates boolean attr', () => {
+  const el = document.createElement('div')
+  const attr = document.createAttribute('hidden')
+  const instance = { element:el, attr, parts: [] }
+  instance.parts = [new AttributeTemplatePart(instance)]
+  instance.parts[0].booleanValue = false
+  is(el.hasAttribute('hidden'), false)
+  is(instance.parts[0].booleanValue, false)
+
+  instance.parts[0].booleanValue = true
+  is(el.hasAttribute('hidden'), true)
+  is(instance.parts[0].booleanValue, true)
+})
+
 
 test('nodes: should preserve spaces', t => {
   let tpl = document.createElement('template')

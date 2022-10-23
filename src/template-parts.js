@@ -45,7 +45,7 @@ export class TemplatePart {
 }
 
 export class AttributeTemplatePart extends TemplatePart {
-  #value = '';
+  #value='';
   get attributeName() { return this.setter.attr.name; }
   get attributeNamespace() { return this.setter.attr.namespaceURI; }
   get element() { return this.setter.element; }
@@ -60,7 +60,7 @@ export class AttributeTemplatePart extends TemplatePart {
     } else element.setAttributeNS(attr.namespaceURI, attr.name, parts.join(''));
   }
   get booleanValue() {
-    this.setter.element.hasAttribute(this.setter.attr.name);
+    return this.setter.element.hasAttribute(this.setter.attr.name);
   }
   set booleanValue(value) {
     if (this.setter.parts.length === 1) this.value = value ? '' : null;
