@@ -134,6 +134,23 @@ test('create: applies data to templated text nodes', () => {
   is(root.innerHTML, `Hello world`)
 })
 
+test('create: applies data to templated element nodes', () => {
+  // https://github.com/github/template-parts/pull/65/files
+
+  const template = document.createElement('template')
+  const element = Object.assign(document.createElement('div'), {
+    innerHTML: 'Hello world'
+  })
+  const originalHTML = `{{x}}`
+  template.innerHTML = originalHTML
+  const instance = new TemplateInstance(template, {x: element})
+  is(template.innerHTML, originalHTML)
+
+  const root = document.createElement('div')
+  root.appendChild(instance)
+  is(root.innerHTML, `<div>Hello world</div>`)
+})
+
 test('create: can render into partial text nodes', () => {
   const template = document.createElement('template')
   const originalHTML = `Hello {{x}}!`
@@ -272,7 +289,7 @@ const propertyIdentityOrBooleanAttribute = {
     for (const part of parts) {
       if (part.expression in params) {
         const value = params[part.expression] ?? ''
-        
+
         // boolean attr
         if (
           typeof value === 'boolean' &&
@@ -589,12 +606,20 @@ test('processor: does not process parts with no param for the expression', () =>
 test('default processor: default processor is identity/boolean', () => {
   const tplEl = document.createElement('template')
   tplEl.innerHTML = `<div x={{x}} hidden={{hidden}} onclick={{onclick}}></div>`
-  const onclick = () => {} 
+  const onclick = () => {}
   const tpl = new TemplateInstance(tplEl, { x: 'Hello', hidden: false, onclick })
   let el = tpl.childNodes[0]
   is(el.getAttribute('x'), 'Hello')
   is(el.hasAttribute('hidden'), false)
   is(el.onclick, onclick) // function
+})
+
+test.todo('img: doesnt perform fake request', () => {
+  const tplEl = document.createElement('template')
+  tplEl.innerHTML = `<img src={{x}} />`
+  document.body.appendChild(tplEl)
+  const tpl = new TemplateInstance(tplEl, { x: '123' })
+  document.body.appendChild(tpl)
 })
 
 test.browser('table: default HTML behavior', () => {
