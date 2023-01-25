@@ -114,6 +114,7 @@ _Template Parts_ processor is interoperable with any standard processor, eg. [gi
 ## Alternatives
 
 * [@github/template-parts](https://github.com/github/template-parts) − viable Template Parts implementation, doesn't closely follow spec in secondary details, but provides reliable ground.
+* [template-extensions](https://github.com/luwes/template-extensions) – user-fiendly adoption of template parts. 
 * [template-instantiation-polyfill](https://github.com/bennypowers/template-instantiation-polyfill#readme) − closely follows the Template Instantiation spec algorithm, but [is not recommended](https://github.com/bennypowers/template-instantiation-polyfill/pull/2#issuecomment-1004110993) by author.
 * [PolymerLabs/template-instantiation](https://github.com/PolymerLabs/template-instantiation) − implementation from Google with TemplateAssembly, TemplateRule and other extensions.
 * [template-instance](https://github.com/ar2r13/TemplateInstance)
