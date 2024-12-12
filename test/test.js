@@ -151,6 +151,35 @@ test('create: applies data to templated element nodes', () => {
   is(root.innerHTML, `<div>Hello world</div>`)
 })
 
+test('create: applies data to templated DocumentFragment nodes', () => {
+  // https://github.com/github/template-parts/pull/73
+
+  const template = document.createElement('template')
+  const fragment = Object.assign(document.createElement('template'), {
+    innerHTML: '<div>Hello world</div>',
+  })
+  const originalHTML = '{{x}}'
+  template.innerHTML = originalHTML
+  const instance = new TemplateInstance(template, {x: fragment.content})
+  is(template.innerHTML, originalHTML)
+
+  const root = document.createElement('div')
+  root.appendChild(instance)
+  is(root.innerHTML, '<div>Hello world</div>')
+})
+
+test('create: applies data to nested templated element nodes', () => {
+  // https://github.com/github/template-parts/pull/72
+
+  const root = document.createElement('div')
+  const template = Object.assign(document.createElement('template'), {
+    innerHTML: '<template><div>{{x}}</div></template>',
+  })
+  root.appendChild(new TemplateInstance(template, {x: 'Hello world'}))
+
+  is(root.innerHTML, '<template><div>Hello world</div></template>')
+})
+
 test('create: can render into partial text nodes', () => {
   const template = document.createElement('template')
   const originalHTML = `Hello {{x}}!`

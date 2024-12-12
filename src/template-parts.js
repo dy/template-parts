@@ -130,6 +130,7 @@ export const parse = (element, parts=[]) => {
 
   for (node of element.childNodes) {
     if (node.nodeType === ELEMENT && !(node instanceof HTMLTemplateElement)) parse(node, parts)
+    else if (node.nodeType === ELEMENT && bareTemplateElement(node)) parse(node.content, parts)
     else {
       if (node.nodeType === ELEMENT || node.data.includes('{{')) {
         const setter = {parentNode: element, parts:[]}
@@ -196,3 +197,11 @@ tokenize = (text) => {
   return mem[text] = tokens
 }
 const mem = {}
+
+const bareTemplateElement = (node) => {
+  if (node instanceof HTMLTemplateElement) {
+    return !(node.hasAttribute('directive') || node.hasAttribute('type') || node.hasAttribute('expression'))
+  } else {
+    return false
+  }
+}
