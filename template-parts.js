@@ -63,7 +63,7 @@ const defaultProcessor = {
         else if (
           typeof value === 'function' &&
           part instanceof AttributeTemplatePart
-        ) part.element[part.attributeName] = value;
+        ) part.element[part.attributeName] = value; 
         else part.value = value;
       }
   }
