@@ -4,7 +4,6 @@
 
 Difference from [@github/template-parts](https://github.com/github/template-parts):
 
-- _InnerTemplatePart_ support.
 - More complete spec [API surface](#spec-surface).
 - `<table><!--{{ data }}--></table>` support<sup><a href="#tables">*</a></sup> ([#24](https://github.com/domenic/template-parts/issues/2)).
 - Single vanilla ESM, no tooling.
