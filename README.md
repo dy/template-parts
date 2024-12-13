@@ -2,11 +2,13 @@
 
 > Compact [template parts](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md#32-template-parts-and-custom-template-process-callback) ponyfill.
 
+**Deprecation notice**: [@github/template-parts](https://github.com/github/template-parts) is better upkept mainstream implementaion with types.
+
 Difference from [@github/template-parts](https://github.com/github/template-parts):
 
-- More complete spec [API surface](#spec-surface).
 - `<table><!--{{ data }}--></table>` support<sup><a href="#tables">*</a></sup> ([#24](https://github.com/domenic/template-parts/issues/2)).
-- Single vanilla ESM, no tooling.
+- Standalone vanilla ESM, no tsc/tooling.
+
 <!-- - [`<svg width={{ width }}>`](https://github.com/github/template-parts/issues/26) and other cases fixed. -->
 
 ## Usage
